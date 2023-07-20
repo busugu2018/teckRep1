@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="48fcdf59-8050-4706-936c-207a4c19303c" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="c9bd8116-c6d6-4073-9a63-b1440d8ced30" >
+		<db:my-sql-connection host="127.0.0.1" port="3306" user="root" password="Badab00m" database="Employees" />
+	</db:config>
+	<flow name="fetch_records_from_a_databaseFlow" doc:id="b1c27d0c-d450-414c-bb42-4f863cf5fbe2" >
+		<http:listener doc:name="Listener" doc:id="76c99654-1b64-4b03-aedd-c33b283db5c0" config-ref="HTTP_Listener_config" path="/fetch1"/>
+		<db:select doc:name="Select" doc:id="4e7905b4-ac28-4fe0-b6d6-556c0548fdcf" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from Employees.employeesInfo where employeeID =: employeeID;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	employeeID : attributes.queryParams.id
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="32e6ed4c-bb6e-4981-8849-67829bc69dbb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	employeeID: payload01.employeeID,
+	employeeName: payload01.employeeName,
+	employeeDesignation: payload01.employeeDesignation
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

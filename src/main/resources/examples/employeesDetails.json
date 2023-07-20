@@ -1,0 +1,28 @@
+[
+	{
+		"employeeID": "12",
+		"employeeName": "Okeke Olaking",
+		"employeeDesignation" : "Team Lead"
+	},
+	{
+		"employeeID": "23",
+		"employeeName": "Nzieng Boussoug",
+		"employeeDesignation" : "Sr. Mule Developer"
+	},
+	{
+		"employeeID": "33",
+		"employeeName": "Susu Sanko",
+		"employeeDesignation" : "Jr. developer"
+	},
+	{
+		"employeeID": "43",
+		"employeeName": "Alex Cougno",
+		"employeeDesignation" : "Sr. Associate"
+	},
+	{
+		"employeeID": "67",
+		"employeeName": "Jo Manin",
+		"employeeDesignation" : "HR Lead"
+	},
+	
+]
